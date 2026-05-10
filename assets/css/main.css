@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #080808;
+    color: #f5f5f5;
+    font-family: 'Geist', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg text-text-primary;
+  }
+
+  ::selection {
+    @apply bg-brand/30 text-text-primary;
+  }
+}
+
+/* Nuxt Content prose styling overrides */
+.prose {
+  @apply text-text-secondary;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply text-text-primary font-semibold;
+}
+
+.prose a {
+  @apply text-brand hover:text-brand-hover underline underline-offset-4 decoration-brand/30 transition-colors;
+}
+
+.prose code {
+  @apply bg-bg-subtle px-1.5 py-0.5 rounded text-sm text-brand;
+}
+
+.prose pre {
+  @apply bg-bg-subtle border border-border rounded-lg;
+}
+
+.prose blockquote {
+  @apply border-l-brand/50 text-text-secondary;
+}
+
+.prose img {
+  @apply rounded-lg;
+}
+
+.prose hr {
+  @apply border-border;
+}
