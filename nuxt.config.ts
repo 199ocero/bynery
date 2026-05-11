@@ -10,19 +10,6 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
   ],
 
-  ogImage: {
-    enabled: true,
-    defaults: {
-      component: 'OgImageStatic',
-      static: {
-        imagePath: '/images/overall.png',
-        width: 1200,
-        height: 630,
-        alt: 'Bynery - Indie dev studio building thoughtful apps',
-      },
-    },
-  },
-
   // Disable experimental features causing #app-manifest error
   experimental: {
     appManifest: false,
@@ -75,6 +62,8 @@ export default defineNuxtConfig({
     description: 'Indie dev studio building thoughtful apps.',
     defaultLocale: 'en',
   },
+
+  ogImage: false,
 
   googleFonts: {
     families: {
