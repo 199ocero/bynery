@@ -1,6 +1,7 @@
 <script setup>
 const navItems = [
   { label: 'Apps', to: '/products' },
+  { label: 'Blog', to: '/blog' },
   { label: 'About', to: '/about' },
   { label: 'Support', to: '/contact' },
 ]

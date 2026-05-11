@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
+    '@nuxtjs/sitemap',
   ],
 
   // Disable experimental features causing #app-manifest error
@@ -25,12 +26,23 @@ export default defineNuxtConfig({
         { loc: '/about', changefreq: 'monthly', priority: 0.6 },
         { loc: '/contact', changefreq: 'monthly', priority: 0.6 },
         { loc: '/products', changefreq: 'weekly', priority: 0.8 },
-        { loc: '/easyreceipt', changefreq: 'weekly', priority: 0.8 },
-        { loc: '/steppet', changefreq: 'weekly', priority: 0.8 },
+        { loc: '/blog', changefreq: 'weekly', priority: 0.8 },
       ]
 
       // Add blog posts from content directory
       const contentDir = join(process.cwd(), 'content')
+
+      // Dynamically scan all subdirectories in content folder
+      const getCategories = async () => {
+        try {
+          const entries = await readdir(contentDir, { withFileTypes: true })
+          return entries
+            .filter((entry: any) => entry.isDirectory())
+            .map((entry: any) => entry.name)
+        } catch {
+          return []
+        }
+      }
 
       const getMarkdownFiles = async (dir: string) => {
         try {
@@ -41,14 +53,17 @@ export default defineNuxtConfig({
         }
       }
 
-      const easyReceiptPosts = await getMarkdownFiles('easyreceipt')
-      const steppetPosts = await getMarkdownFiles('steppet')
+      // Get all categories dynamically
+      const categories = await getCategories()
 
-      for (const post of easyReceiptPosts) {
-        routes.push({ loc: `/easyreceipt/${post}`, changefreq: 'weekly', priority: 0.8 })
-      }
-      for (const post of steppetPosts) {
-        routes.push({ loc: `/steppet/${post}`, changefreq: 'weekly', priority: 0.8 })
+      // Add category index pages and their posts
+      for (const category of categories) {
+        routes.push({ loc: `/${category}`, changefreq: 'weekly', priority: 0.8 })
+
+        const posts = await getMarkdownFiles(category)
+        for (const post of posts) {
+          routes.push({ loc: `/${category}/${post}`, changefreq: 'weekly', priority: 0.8 })
+        }
       }
 
       return routes
