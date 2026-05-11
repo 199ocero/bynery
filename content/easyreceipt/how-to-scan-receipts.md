@@ -26,7 +26,7 @@ This is a step above basic OCR apps that only capture the grand total. With line
 
 ### Step 1: Download and open EasyReceipt
 
-EasyReceipt is available on iOS and Android. The free plan includes 10 AI-powered scans per month — no credit card required to start. [Download here](https://bynery.app/easyreceipt#downloads).
+EasyReceipt is available on iOS and Android. The free plan includes 10 AI-powered scans per month — no credit card required to start. CSV and Google Sheets export are available on Pro and Power plans. [Download here](https://bynery.app/easyreceipt#downloads).
 
 ### Step 2: Tap the scan button
 
@@ -64,8 +64,8 @@ Getting 99%+ accuracy is easy if you follow these habits:
 Once scanned, EasyReceipt stores every receipt in your history with the extracted data attached. From there you can:
 
 - **Filter by date range** — find all receipts from a specific month or trip
-- **Export to CSV** — drop your expense data into Excel or any spreadsheet tool
-- **Export to Google Sheets** — sync directly into a shared team sheet or personal budget tracker
+- **Export to CSV** (Pro & Power) — drop your expense data into Excel or any spreadsheet tool
+- **Export to Google Sheets** (Pro & Power) — sync directly into a shared team sheet or personal budget tracker
 - **View expense summaries** — Pro and Power plan users get a spending overview broken down by category and time period
 
 Receipt history is stored for 3 months on the free plan, 1 year on Pro, and forever on the Power plan.
@@ -74,7 +74,8 @@ Receipt history is stored for 3 months on the free plan, 1 year on Pro, and fore
 
 | Method | Time per receipt | Accuracy | Line-item detail | Exportable |
 |---|---|---|---|---|
-| AI scan (EasyReceipt) | Under 10 seconds | 99%+ | ✅ Yes | ✅ CSV + Sheets |
+| AI scan (EasyReceipt Pro+) | Under 10 seconds | 99%+ | ✅ Yes | ✅ CSV + Sheets |
+| AI scan (EasyReceipt Free) | Under 10 seconds | 99%+ | ✅ Yes | ❌ No |
 | Basic OCR apps | 15–30 seconds | Totals only | ❌ No | ✅ CSV only |
 | Manual entry | 2–5 minutes | Human error risk | ✅ Yes | ✅ Depends on app |
 | Photo archive (camera roll) | 5 seconds | N/A | ❌ No | ❌ No |
@@ -88,10 +89,10 @@ Most receipts are processed in under 10 seconds. Longer receipts with many line 
 Yes. EasyReceipt detects the currency on the receipt and converts it using real-time global exchange rates. This is included on the free plan with limited currencies, and in full on Pro and Power plans.
 
 **How many receipts can I scan for free?**
-The free plan includes 10 scans per month. If you need more, the Pro plan ($5.99/month) gives you 200 scans, and the Power plan ($9.99/month) is unlimited.
+The free plan includes 10 scans per month with AI scanning and receipt history only. If you need exports, the Pro plan ($5.99/month) gives you 200 scans plus CSV and Google Sheets export, and the Power plan ($9.99/month) is unlimited.
 
 **What file formats can I export receipts to?**
-EasyReceipt exports to CSV and Google Sheets on all plans, including free. The Power plan also includes expense summary exports.
+EasyReceipt exports to CSV and Google Sheets on Pro and Power plans. The Power plan also includes expense summary exports.
 
 **What happens if the scan misreads something?**
 After the AI extracts data, you can review and correct any field before saving. Misreads are rare on clean, flat, well-lit receipts but can happen with faded thermal paper or handwritten receipts.

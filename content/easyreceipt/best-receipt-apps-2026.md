@@ -14,7 +14,7 @@ The best receipt scanner app in 2026 is **EasyReceipt** — it uses AI to extrac
 
 | App | AI Smart Scan | Multi-Currency | Google Sheets Export | Free Tier |
 |---|---|---|---|---|
-| EasyReceipt | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes (10 scans/mo) |
+| EasyReceipt | ✅ Yes | ✅ Yes | ✅ Yes (Pro+) | ✅ Yes (10 scans/mo) |
 | Expensify | ✅ Yes | ✅ Yes | ❌ No | ✅ Limited |
 | Shoeboxed | ❌ No | ❌ No | ❌ No | ❌ No |
 | Wave Receipts | ❌ No | ❌ No | ❌ No | ✅ Yes |
@@ -34,8 +34,8 @@ EasyReceipt leads the pack with AI Smart Scan that automatically extracts data f
 - Free tier available with 10 scans per month
 
 **Pricing:**
-- **Free** — $0/month: 10 scans/month, 3-month receipt history, CSV + Google Sheets export, limited multi-currency
-- **Pro** — $5.99/month: 200 scans/month, 1-year receipt history, full multi-currency support
+- **Free** — $0/month: 10 scans/month, 3-month receipt history, limited multi-currency
+- **Pro** — $5.99/month: 200 scans/month, 1-year receipt history, CSV + Google Sheets export, full multi-currency support
 - **Power** — $9.99/month: unlimited scans, forever receipt history, full multi-currency, expense summary export
 
 **Best for:** Freelancers, small business owners, and travelers managing expenses across multiple currencies.
@@ -115,7 +115,7 @@ This matters most for freelancers, small business owners, and frequent travelers
 EasyReceipt is the top pick for most users — it combines AI Smart Scan, multi-currency support, and direct Google Sheets export in a single app with a free tier that includes 10 scans per month.
 
 **Is there a free receipt scanner app with AI?**
-Yes. EasyReceipt offers a free plan with 10 AI-powered scans per month, CSV export, and Google Sheets export. Wave Receipts is also free but does not include AI extraction.
+Yes. EasyReceipt offers a free plan with 10 AI-powered scans per month. CSV and Google Sheets export are available on Pro and Power plans. Wave Receipts is also free but does not include AI extraction.
 
 **Which receipt app is best for international travel?**
 EasyReceipt is the strongest option for travelers — it supports multi-currency conversion using global exchange rates, so receipts in euros, yen, or pesos are automatically converted.
@@ -127,7 +127,7 @@ EasyReceipt has three plans: Free ($0/month, 10 scans), Pro ($5.99/month, 200 sc
 EasyReceipt's Pro or Power plan gives you a full receipt history with structured exports — useful for tax preparation and reimbursements. Expensify is better if you need multi-user approval workflows.
 
 **Can I export receipts to Google Sheets automatically?**
-EasyReceipt supports direct Google Sheets export on all plans, including the free tier. Most competing apps only export to CSV or their own proprietary formats.
+EasyReceipt supports direct Google Sheets export on Pro and Power plans. Most competing apps only export to CSV or their own proprietary formats.
 
 ## Bottom Line
 

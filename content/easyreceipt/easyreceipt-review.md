@@ -18,8 +18,8 @@ author: "Bynery Team"
 | Scans per month | 10 | 200 | Unlimited |
 | Receipt history | 3 months | 1 year | Forever |
 | Multi-currency | Limited | Full | Full |
-| CSV export | ✅ | ✅ | ✅ |
-| Google Sheets export | ✅ | ✅ | ✅ |
+| CSV export | ❌ | ✅ | ✅ |
+| Google Sheets export | ❌ | ✅ | ✅ |
 | Expense summary export | ❌ | ❌ | ✅ |
 
 ## What EasyReceipt Does Well
@@ -38,7 +38,7 @@ This is an underrated feature. Most receipt apps export to CSV only — useful, 
 
 ### Pricing honesty
 
-The free tier is real: 10 AI-powered scans per month, full CSV and Google Sheets export, 3-month receipt history. No watermarks, no locked features on exports. For casual users or anyone who wants to test the app properly before paying, this is a fair offering.
+The free tier is real: 10 AI-powered scans per month, 3-month receipt history. No watermarks. For casual users who want to try the app, this is a fair starting point. Export to CSV and Google Sheets is available on Pro and Power plans.
 
 ## What EasyReceipt Does Not Do
 
@@ -71,7 +71,7 @@ Being clear about limitations matters:
 | Multi-currency | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No |
 | Google Sheets export | ✅ Yes | ❌ No | ❌ No | ❌ No |
 | Team features | ❌ No | ✅ Yes | ✅ Yes | ❌ No |
-| Free tier | ✅ Yes | ✅ Limited | ❌ No | ✅ Yes |
+| Free tier | ✅ Yes (scan only) | ✅ Limited | ❌ No | ✅ Yes |
 
 Against Expensify, EasyReceipt wins on line-item detail and Google Sheets export; Expensify wins on team workflows. Against Veryfi, EasyReceipt wins on price and Google Sheets; Veryfi wins on API access and team features. Against Wave, EasyReceipt wins on AI accuracy and multi-currency; Wave wins if you also need free invoicing.
 
@@ -86,7 +86,7 @@ The Power plan at $9.99/month adds unlimited scans, permanent receipt history, a
 ## Frequently Asked Questions
 
 **Is EasyReceipt free?**
-Yes. The free plan includes 10 AI-powered scans per month, CSV and Google Sheets export, and 3-month receipt history — no credit card required. Paid plans start at $5.99/month.
+Yes. The free plan includes 10 AI-powered scans per month and 3-month receipt history — no credit card required. CSV and Google Sheets export are available on paid plans starting at $5.99/month.
 
 **How accurate is EasyReceipt's AI scanning?**
 EasyReceipt reports 99%+ accuracy on standard printed receipts. Accuracy is lower on faded thermal paper, heavily crumpled receipts, or handwritten receipts. Scanning on the same day, while the receipt is flat and clean, produces the best results.

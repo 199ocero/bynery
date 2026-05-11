@@ -32,8 +32,8 @@ const pricing = [
       '10 scans/month',
       'Smart Scan ✅',
       'Receipt History: 3 months',
-      'Export CSV ✅',
-      'Export Google Sheets ✅',
+      'Export CSV: ❌',
+      'Export Google Sheets: ❌',
       'Multi-currency: Limited',
       'Expense Summary: View only',
     ],
@@ -109,15 +109,15 @@ const faqs = [
   },
   {
     question: 'Can I use this for business expenses?',
-    answer: 'Absolutely. EasyReceipt Scanner is designed for both personal and business use. Export your receipts to CSV or Google Sheets for easy accounting integration.',
+    answer: 'Absolutely. EasyReceipt Scanner is designed for both personal and business use. Upgrade to Pro or Power to export your receipts to CSV or Google Sheets for easy accounting integration.',
   },
   {
     question: 'What\'s the difference between the plans?',
-    answer: 'Free: 10 scans/month, 3-month history. Pro: 200 scans/month, 1-year history. Power: Unlimited scans, forever history, plus expense summary exports. All plans include AI scanning and CSV/Google Sheets exports.',
+    answer: 'Free: 10 scans/month, 3-month history, AI scanning only. Pro: 200 scans/month, 1-year history, CSV + Google Sheets exports. Power: Unlimited scans, forever history, plus expense summary exports.',
   },
   {
     question: 'How do I export my receipts?',
-    answer: 'Tap the export button to download as CSV or send directly to Google Sheets. Power users can also export expense summaries for easy reporting.',
+    answer: 'Pro and Power users can tap the export button to download as CSV or send directly to Google Sheets. Power users can also export expense summaries for easy reporting.',
   },
   {
     question: 'Does it work with faded or damaged receipts?',
