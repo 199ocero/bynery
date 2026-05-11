@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/seo',
   ],
 
   // Disable experimental features causing #app-manifest error
@@ -63,8 +62,6 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  ogImage: false,
-
   googleFonts: {
     families: {
       Geist: [300, 400, 500, 600, 700],
@@ -91,6 +88,13 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'theme-color', content: '#0a0a0a' },
+        { property: 'og:image', content: 'https://bynery.app/images/overall.png' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:alt', content: 'Bynery - Indie dev studio building thoughtful apps' },
+        { property: 'og:image:type', content: 'image/png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://bynery.app/images/overall.png' },
       ],
     },
   },

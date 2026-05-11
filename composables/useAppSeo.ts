@@ -15,7 +15,7 @@ export function useAppSeo({ title, description, image, url, canonical }: SeoOpti
     ogTitle: fullTitle,
     description: description,
     ogDescription: description,
-    ogImage: image ?? 'https://bynery.app/og-default.png',
+    ogImage: image ?? 'https://bynery.app/images/overall.png',
     ogUrl: url ? `https://bynery.app${url}` : undefined,
     ogSiteName: 'Bynery',
     twitterCard: 'summary_large_image',
