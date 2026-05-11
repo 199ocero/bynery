@@ -11,7 +11,16 @@ export default defineNuxtConfig({
   ],
 
   ogImage: {
-    enabled: false,
+    enabled: true,
+    defaults: {
+      component: 'OgImageStatic',
+      static: {
+        imagePath: '/images/overall.png',
+        width: 1200,
+        height: 630,
+        alt: 'Bynery - Indie dev studio building thoughtful apps',
+      },
+    },
   },
 
   // Disable experimental features causing #app-manifest error
