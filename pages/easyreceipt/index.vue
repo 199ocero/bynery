@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import useEmblaCarousel from 'embla-carousel-vue'
+import Autoplay from 'embla-carousel-autoplay'
+import easyreceiptBasePhone from '~/assets/images/easyreceipt/base_phone.png'
+import easyreceiptBasePhone1 from '~/assets/images/easyreceipt/base_phone-1.png'
+import easyreceiptBasePhone2 from '~/assets/images/easyreceipt/base_phone-2.png'
+import easyreceiptBasePhone3 from '~/assets/images/easyreceipt/base_phone-3.png'
+import easyreceiptBasePhone4 from '~/assets/images/easyreceipt/base_phone-4.png'
+import easyreceiptBasePhone5 from '~/assets/images/easyreceipt/base_phone-5.png'
+
 useAppSeo({
   title: 'EasyReceipt Scanner',
   description: 'Scan receipts with superpowers. AI-powered receipt scanning with multi-currency support, fast exports, and expense tracking.',
@@ -17,10 +26,58 @@ const features = [
 ]
 
 const screenshots = [
-  { title: 'Dashboard', description: 'View all your receipts at a glance with powerful filters' },
-  { title: 'Scan View', description: 'Point and shoot — our AI does the rest' },
-  { title: 'Receipt Details', description: 'Every line item extracted and searchable' },
+  { src: easyreceiptBasePhone },
+  { src: easyreceiptBasePhone1 },
+  { src: easyreceiptBasePhone2 },
+  { src: easyreceiptBasePhone3 },
+  { src: easyreceiptBasePhone4 },
+  { src: easyreceiptBasePhone5 },
 ]
+
+const [screenshotCarouselRef, screenshotCarouselApi] = useEmblaCarousel(
+  {
+    loop: true,
+    align: 'start',
+    containScroll: 'trimSnaps',
+    slidesToScroll: 1,
+    dragFree: false,
+    inViewThreshold: 0.1,
+    breakpoints: {},
+  },
+  [Autoplay({ delay: 7000, stopOnInteraction: true })],
+)
+
+const currentScreenshotSlide = ref(0)
+
+const syncScreenshotSlide = () => {
+  if (!screenshotCarouselApi.value) return
+  currentScreenshotSlide.value = screenshotCarouselApi.value.selectedScrollSnap()
+}
+
+const nextScreenshotSlide = () => {
+  screenshotCarouselApi.value?.scrollNext()
+}
+
+const previousScreenshotSlide = () => {
+  screenshotCarouselApi.value?.scrollPrev()
+}
+
+const goToScreenshotSlide = (index: number) => {
+  screenshotCarouselApi.value?.scrollTo(index)
+}
+
+onMounted(() => {
+  if (!screenshotCarouselApi.value) return
+  syncScreenshotSlide()
+  screenshotCarouselApi.value.on('select', syncScreenshotSlide)
+  screenshotCarouselApi.value.on('reInit', syncScreenshotSlide)
+})
+
+onUnmounted(() => {
+  if (!screenshotCarouselApi.value) return
+  screenshotCarouselApi.value.off('select', syncScreenshotSlide)
+  screenshotCarouselApi.value.off('reInit', syncScreenshotSlide)
+})
 
 const pricing = [
   {
@@ -204,13 +261,13 @@ useHead({
           Now available on iOS & Android
         </div>
         <h1 class="text-4xl font-bold tracking-tight text-[#f0f0f0] sm:text-5xl lg:text-6xl">
-          Scan receipts<br>
+          Effortless Receipt Scanning<br>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#5e6ad2] to-[#6b78dc]">
-            with superpowers.
+            for Modern Businesses
           </span>
         </h1>
         <p class="mt-6 text-lg leading-relaxed text-[#888]">
-          AI-powered receipt scanning with multi-currency support, fast exports, and expense tracking. Your receipts, organized effortlessly.
+          Instantly scan, organize, and export your receipts with EasyReceipt Scanner. Powered by advanced AI, our app makes expense tracking, multi-currency management, and tax reporting simple and secure. Trusted by freelancers, entrepreneurs, and small businesses worldwide.
         </p>
         <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
           <BaseButton href="https://apps.apple.com/us/app/easyreceipt-scanner/id6760520233" target="_blank" rel="noopener" variant="primary">
@@ -245,24 +302,73 @@ useHead({
   </section>
 
   <!-- Screenshots -->
-  <section class="py-24 border-t border-white/[0.06]">
+  <section class="pt-2 pb-16">
     <BaseContainer>
-      <div class="mx-auto max-w-5xl">
-        <div class="mb-12 text-center">
-          <h2 class="text-sm font-medium text-white/60 uppercase tracking-wider">App Design</h2>
-          <h3 class="mt-3 text-3xl font-bold text-[#f0f0f0] sm:text-4xl">
-            Beautiful & Intuitive
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-8 text-center">
+          <h2 class="text-sm font-medium text-white/60 uppercase tracking-wider">App Screens</h2>
+          <h3 class="mt-3 text-2xl font-bold text-[#f0f0f0] sm:text-3xl">
+            Receipts in. Organized life out.
           </h3>
-          <p class="mt-4 text-[#888] max-w-2xl mx-auto">
-            An app that's as pleasant to use as it is powerful
+          <p class="mt-3 text-[#888] max-w-xl mx-auto">
+            Scan receipts in seconds, track expenses automatically, and keep every record searchable and export ready without the spreadsheet headache.
           </p>
         </div>
-        <div class="mt-12 grid gap-6 md:grid-cols-3">
-          <AppScreenshot
-            v-for="shot in screenshots"
-            :key="shot.title"
-            v-bind="shot"
-          />
+
+        <div class="mx-auto w-full max-w-4xl">
+          <div ref="screenshotCarouselRef" class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
+            <div class="flex">
+              <div
+                v-for="(shot, index) in screenshots"
+                :key="index"
+                class="min-w-0 flex-[0_0_25%] p-2"
+              >
+                <img
+                  :src="shot.src"
+                  alt="EasyReceipt screenshot"
+                  class="block w-full h-auto rounded-xl object-contain"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 flex items-center justify-between">
+            <button
+              @click="previousScreenshotSlide"
+              class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+              aria-label="Previous screenshot"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <div class="flex items-center justify-center gap-2">
+              <button
+                v-for="(_, index) in screenshots"
+                :key="`easyreceipt-screen-${index}`"
+                @click="goToScreenshotSlide(index)"
+                class="h-2 w-2 rounded-full transition-colors"
+                :class="
+                  currentScreenshotSlide === index
+                    ? 'bg-[#5e6ad2]'
+                    : 'bg-white/30 hover:bg-white/50'
+                "
+                :aria-label="`Go to screenshot ${index + 1}`"
+              />
+            </div>
+
+            <button
+              @click="nextScreenshotSlide"
+              class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+              aria-label="Next screenshot"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </BaseContainer>
@@ -273,12 +379,12 @@ useHead({
     <BaseContainer>
       <div class="mx-auto max-w-4xl">
         <div class="mb-12 text-center">
-          <h2 class="text-sm font-medium text-white/60 uppercase tracking-wider">Features</h2>
+          <h2 class="text-sm font-medium text-white/60 uppercase tracking-wider">Key Features</h2>
           <h3 class="mt-3 text-3xl font-bold text-[#f0f0f0] sm:text-4xl">
-            Powerful Features
+            Smart, Secure, and Effortless
           </h3>
           <p class="mt-4 text-[#888] max-w-2xl mx-auto">
-            Everything you need to manage receipts
+            Discover AI-powered receipt scanning, real-time multi-currency conversion, one-tap exports, and privacy-first expense management. EasyReceipt Scanner is your all-in-one solution for digital receipts and business expense tracking.
           </p>
         </div>
         <ProductGrid :features="features" />

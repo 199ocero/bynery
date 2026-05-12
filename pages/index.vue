@@ -1,4 +1,21 @@
 <script setup lang="ts">
+import useEmblaCarousel from "embla-carousel-vue";
+import Autoplay from "embla-carousel-autoplay";
+import basePhone from "~/assets/images/easyreceipt/base_phone.png";
+import basePhone1 from "~/assets/images/easyreceipt/base_phone-1.png";
+import basePhone2 from "~/assets/images/easyreceipt/base_phone-2.png";
+import basePhone3 from "~/assets/images/easyreceipt/base_phone-3.png";
+import basePhone4 from "~/assets/images/easyreceipt/base_phone-4.png";
+import basePhone5 from "~/assets/images/easyreceipt/base_phone-5.png";
+import ersLogo from "~/assets/images/ers.svg";
+import steppetPhone from "~/assets/images/steppet/base_phone.png";
+import steppetPhone1 from "~/assets/images/steppet/base_phone_1.png";
+import steppetPhone2 from "~/assets/images/steppet/base_phone_2.png";
+import steppetPhone3 from "~/assets/images/steppet/base_phone_3.png";
+import steppetPhone4 from "~/assets/images/steppet/base_phone_4.png";
+import steppetPhone5 from "~/assets/images/steppet/base_phone_5.png";
+import steppetLogo from "~/assets/images/steppet.svg";
+
 useAppSeo({
   title: "Bynery – Independent Software Studio | Focused Mobile & Web Apps",
   description:
@@ -68,6 +85,108 @@ useHead({
     },
   ],
 })
+
+// EasyReceipt carousel
+const easyreceiptImages = [
+  basePhone,
+  basePhone1,
+  basePhone2,
+  basePhone3,
+  basePhone4,
+  basePhone5,
+];
+
+const [emblaRef, emblaApi] = useEmblaCarousel(
+  {
+    loop: true,
+    align: "center",
+    containScroll: "trimSnaps",
+  },
+  [Autoplay({ delay: 6500, stopOnInteraction: true })],
+);
+
+const currentEasyreceiptSlide = ref(0);
+
+const syncEasyreceiptSlide = () => {
+  if (!emblaApi.value) return;
+  currentEasyreceiptSlide.value = emblaApi.value.selectedScrollSnap();
+};
+
+const nextEasyreceiptSlide = () => {
+  emblaApi.value?.scrollNext();
+};
+
+const previousEasyreceiptSlide = () => {
+  emblaApi.value?.scrollPrev();
+};
+
+const goToEasyreceiptSlide = (index: number) => {
+  emblaApi.value?.scrollTo(index);
+};
+
+// Steppet carousel
+const steppetImages = [
+  steppetPhone,
+  steppetPhone1,
+  steppetPhone2,
+  steppetPhone3,
+  steppetPhone4,
+  steppetPhone5,
+];
+
+const [steppetEmblaRef, steppetEmblaApi] = useEmblaCarousel(
+  {
+    loop: true,
+    align: "center",
+    containScroll: "trimSnaps",
+  },
+  [Autoplay({ delay: 6500, stopOnInteraction: true })],
+);
+
+const currentSteppetSlide = ref(0);
+
+const syncSteppetSlide = () => {
+  if (!steppetEmblaApi.value) return;
+  currentSteppetSlide.value = steppetEmblaApi.value.selectedScrollSnap();
+};
+
+const nextSteppetSlide = () => {
+  steppetEmblaApi.value?.scrollNext();
+};
+
+const previousSteppetSlide = () => {
+  steppetEmblaApi.value?.scrollPrev();
+};
+
+const goToSteppetSlide = (index: number) => {
+  steppetEmblaApi.value?.scrollTo(index);
+};
+
+onMounted(() => {
+  if (emblaApi.value) {
+    syncEasyreceiptSlide();
+    emblaApi.value.on("select", syncEasyreceiptSlide);
+    emblaApi.value.on("reInit", syncEasyreceiptSlide);
+  }
+
+  if (steppetEmblaApi.value) {
+    syncSteppetSlide();
+    steppetEmblaApi.value.on("select", syncSteppetSlide);
+    steppetEmblaApi.value.on("reInit", syncSteppetSlide);
+  }
+});
+
+onUnmounted(() => {
+  if (emblaApi.value) {
+    emblaApi.value.off("select", syncEasyreceiptSlide);
+    emblaApi.value.off("reInit", syncEasyreceiptSlide);
+  }
+
+  if (steppetEmblaApi.value) {
+    steppetEmblaApi.value.off("select", syncSteppetSlide);
+    steppetEmblaApi.value.off("reInit", syncSteppetSlide);
+  }
+});
 </script>
 
 <template>
@@ -157,9 +276,13 @@ useHead({
           <div class="space-y-6">
             <div class="flex items-center gap-3">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5e6ad2] to-[#7c5cbf] flex items-center justify-center text-2xl shadow-xl shadow-[#5e6ad2]/20"
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#f5f5f5] to-[#ffffff] flex items-center justify-center text-2xl shadow-xl shadow-[#5e6ad2]/20"
               >
-                🧾
+                <img
+                  :src="ersLogo"
+                  alt="EasyReceipt logo"
+                  class="h-8 w-8 rounded-md object-contain"
+                />
               </div>
               <div>
                 <h3 class="text-2xl font-semibold">EasyReceipt Scanner</h3>
@@ -209,34 +332,61 @@ useHead({
             <div
               class="absolute -inset-4 bg-gradient-to-br from-[#5e6ad2]/20 to-transparent blur-2xl opacity-50"
             ></div>
-            <div
-              class="relative bg-[#0f0f0f] border border-white/[0.08] rounded-[24px] p-8 aspect-video flex flex-col justify-center overflow-hidden"
-            >
-              <div class="space-y-4 relative">
-                <!-- Animated Scan Line -->
-                <div
-                  class="absolute -inset-x-8 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#5e6ad2] to-transparent shadow-[0_0_15px_rgba(94,106,210,0.8)] z-10 animate-scan"
-                ></div>
-
-                <div
-                  class="h-3 w-2/3 bg-white/[0.05] rounded animate-pulse"
-                ></div>
-                <div class="h-3 w-full bg-white/[0.05] rounded"></div>
-                <div class="h-3 w-4/5 bg-white/[0.05] rounded"></div>
-                <div class="h-3 w-1/2 bg-[#5e6ad2]/20 rounded"></div>
-              </div>
-              <div class="mt-8 flex justify-between items-center">
-                <div class="text-2xl font-mono text-white">$142.50</div>
-                <div class="flex items-center gap-2">
-                  <span
-                    class="w-1.5 h-1.5 rounded-full bg-[#5e6ad2] animate-ping"
-                  ></span>
+            <div class="relative mx-auto w-[280px] sm:w-[320px] md:w-[360px]">
+              <div
+                ref="emblaRef"
+                class="overflow-hidden"
+              >
+                <div class="flex">
                   <div
-                    class="text-[10px] uppercase tracking-widest text-[#5e6ad2] font-semibold"
+                    v-for="(image, index) in easyreceiptImages"
+                    :key="image"
+                    class="min-w-0 flex-[0_0_100%] p-2"
                   >
-                    AI Recognition Active
+                    <img
+                      :src="image"
+                      :alt="`EasyReceipt screenshot ${index + 1}`"
+                      class="block h-auto w-full rounded-[18px] object-contain"
+                    />
                   </div>
                 </div>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between">
+                <button
+                  @click="previousEasyreceiptSlide"
+                  class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+                  aria-label="Previous slide"
+                >
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <div class="flex justify-center gap-2">
+                  <button
+                    v-for="(_, index) in easyreceiptImages"
+                    :key="`dot-${index}`"
+                    @click="goToEasyreceiptSlide(index)"
+                    class="h-2 w-2 rounded-full transition-colors"
+                    :class="
+                      currentEasyreceiptSlide === index
+                        ? 'bg-[#5e6ad2]'
+                        : 'bg-white/30 hover:bg-white/50'
+                    "
+                    :aria-label="`Go to slide ${index + 1}`"
+                  />
+                </div>
+
+                <button
+                  @click="nextEasyreceiptSlide"
+                  class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+                  aria-label="Next slide"
+                >
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -250,23 +400,58 @@ useHead({
             <div
               class="absolute -inset-4 bg-gradient-to-br from-[#00b341]/20 to-transparent blur-2xl opacity-50"
             ></div>
-            <div
-              class="relative bg-[#0f0f0f] border border-white/[0.08] rounded-[32px] p-8 aspect-square flex items-center justify-center overflow-hidden"
-            >
-              <div class="text-center">
-                <div class="text-8xl mb-6 animate-float inline-block">🐣</div>
-                <div
-                  class="w-48 h-2 bg-white/[0.1] rounded-full overflow-hidden relative"
-                >
+            <div class="relative mx-auto w-[280px] sm:w-[320px] md:w-[360px]">
+              <div ref="steppetEmblaRef" class="overflow-hidden">
+                <div class="flex">
                   <div
-                    class="absolute inset-0 bg-[#00b341] animate-progress-fill shadow-[0_0_12px_#00b341]"
-                  ></div>
+                    v-for="(image, index) in steppetImages"
+                    :key="image"
+                    class="min-w-0 flex-[0_0_100%] p-2"
+                  >
+                    <img
+                      :src="image"
+                      :alt="`Steppet screenshot ${index + 1}`"
+                      class="block h-auto w-full rounded-[18px] object-contain"
+                    />
+                  </div>
                 </div>
-                <p
-                  class="mt-4 font-mono text-[10px] text-[#555] tracking-widest uppercase animate-pulse"
+              </div>
+
+              <div class="mt-3 flex items-center justify-between">
+                <button
+                  @click="previousSteppetSlide"
+                  class="rounded-full bg-[#00b341]/30 p-2 text-white transition-colors hover:bg-[#00b341]/50"
+                  aria-label="Previous Steppet slide"
                 >
-                  Evolving Stage 2/5
-                </p>
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <div class="flex justify-center gap-2">
+                  <button
+                    v-for="(_, index) in steppetImages"
+                    :key="`steppet-dot-${index}`"
+                    @click="goToSteppetSlide(index)"
+                    class="h-2 w-2 rounded-full transition-colors"
+                    :class="
+                      currentSteppetSlide === index
+                        ? 'bg-[#00b341]'
+                        : 'bg-white/30 hover:bg-white/50'
+                    "
+                    :aria-label="`Go to Steppet slide ${index + 1}`"
+                  />
+                </div>
+
+                <button
+                  @click="nextSteppetSlide"
+                  class="rounded-full bg-[#00b341]/30 p-2 text-white transition-colors hover:bg-[#00b341]/50"
+                  aria-label="Next Steppet slide"
+                >
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -274,9 +459,13 @@ useHead({
           <div class="order-1 lg:order-2 space-y-6">
             <div class="flex items-center gap-3">
               <div
-                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00b341] to-[#008a32] flex items-center justify-center text-2xl"
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#010830] to-[#00072b] flex items-center justify-center text-2xl"
               >
-                👟
+                <img
+                  :src="steppetLogo"
+                  alt="Steppet logo"
+                  class="h-8 w-8 rounded-md object-contain"
+                />
               </div>
               <div>
                 <h3 class="text-2xl font-semibold">Steppet</h3>

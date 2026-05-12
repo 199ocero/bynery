@@ -1,4 +1,66 @@
 <script setup lang="ts">
+import useEmblaCarousel from 'embla-carousel-vue'
+import Autoplay from 'embla-carousel-autoplay'
+import steppetBasePhone from '~/assets/images/steppet/base_phone.png'
+import steppetBasePhone1 from '~/assets/images/steppet/base_phone_1.png'
+import steppetBasePhone2 from '~/assets/images/steppet/base_phone_2.png'
+import steppetBasePhone3 from '~/assets/images/steppet/base_phone_3.png'
+import steppetBasePhone4 from '~/assets/images/steppet/base_phone_4.png'
+import steppetBasePhone5 from '~/assets/images/steppet/base_phone_5.png'
+
+const steppetScreenshots = [
+  { src: steppetBasePhone },
+  { src: steppetBasePhone1 },
+  { src: steppetBasePhone2 },
+  { src: steppetBasePhone3 },
+  { src: steppetBasePhone4 },
+  { src: steppetBasePhone5 },
+]
+
+const [steppetCarouselRef, steppetCarouselApi] = useEmblaCarousel(
+  {
+    loop: true,
+    align: 'start',
+    containScroll: 'trimSnaps',
+    slidesToScroll: 1,
+    dragFree: false,
+    inViewThreshold: 0.1,
+    breakpoints: {},
+  },
+  [Autoplay({ delay: 7000, stopOnInteraction: true })],
+)
+
+const currentSteppetSlide = ref(0)
+
+const syncSteppetSlide = () => {
+  if (!steppetCarouselApi.value) return
+  currentSteppetSlide.value = steppetCarouselApi.value.selectedScrollSnap()
+}
+
+const nextSteppetSlide = () => {
+  steppetCarouselApi.value?.scrollNext()
+}
+
+const previousSteppetSlide = () => {
+  steppetCarouselApi.value?.scrollPrev()
+}
+
+const goToSteppetSlide = (index: number) => {
+  steppetCarouselApi.value?.scrollTo(index)
+}
+
+onMounted(() => {
+  if (!steppetCarouselApi.value) return
+  syncSteppetSlide()
+  steppetCarouselApi.value.on('select', syncSteppetSlide)
+  steppetCarouselApi.value.on('reInit', syncSteppetSlide)
+})
+
+onUnmounted(() => {
+  if (!steppetCarouselApi.value) return
+  steppetCarouselApi.value.off('select', syncSteppetSlide)
+  steppetCarouselApi.value.off('reInit', syncSteppetSlide)
+})
 useAppSeo({
   title: 'Steppet - Turn Every Step Into an Adventure',
   description: 'A fitness + virtual pet app that turns your daily walks into a fun adventure. Choose a virtual pet companion, walk to hit step goals, and watch your pet evolve.',
@@ -155,6 +217,79 @@ useHead({
     </BaseContainer>
   </section>
 
+  <!-- App Screens Carousel -->
+  <section class="pt-2 pb-16">
+    <BaseContainer>
+      <div class="mx-auto max-w-4xl">
+        <div class="mb-8 text-center">
+          <h2 class="text-sm font-medium text-white/60 uppercase tracking-wider">App Screens</h2>
+          <h3 class="mt-3 text-2xl font-bold text-[#f0f0f0] sm:text-3xl">
+            Steps in. Pets evolve out.
+          </h3>
+          <p class="mt-3 text-[#888] max-w-xl mx-auto">
+            Track your steps, care for your virtual pet, and turn daily walks into an adventure. See your progress, streaks, and pet evolution—all in one fun, motivating app.
+          </p>
+        </div>
+
+        <div class="mx-auto w-full max-w-4xl">
+          <div ref="steppetCarouselRef" class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
+            <div class="flex">
+              <div
+                v-for="(shot, index) in steppetScreenshots"
+                :key="index"
+                class="min-w-0 flex-[0_0_25%] p-2"
+              >
+                <img
+                  :src="shot.src"
+                  alt="Steppet screenshot"
+                  class="block w-full h-auto rounded-xl object-contain"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 flex items-center justify-between">
+            <button
+              @click="previousSteppetSlide"
+              class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+              aria-label="Previous screenshot"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <div class="flex items-center justify-center gap-2">
+              <button
+                v-for="(_, index) in steppetScreenshots"
+                :key="`steppet-screen-${index}`"
+                @click="goToSteppetSlide(index)"
+                class="h-2 w-2 rounded-full transition-colors"
+                :class="
+                  currentSteppetSlide === index
+                    ? 'bg-[#5e6ad2]'
+                    : 'bg-white/30 hover:bg-white/50'
+                "
+                :aria-label="`Go to screenshot ${index + 1}`"
+              />
+            </div>
+
+            <button
+              @click="nextSteppetSlide"
+              class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
+              aria-label="Next screenshot"
+            >
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </BaseContainer>
+  </section>
+
   <!-- Features -->
   <section class="py-24 border-t border-white/[0.06] bg-[#0c0c0c]/30">
     <BaseContainer>
@@ -277,8 +412,8 @@ useHead({
 
   <!-- Blog -->
   <BlogList
-    v-if="posts && posts.length"
-    :posts="posts.map(p => ({
+    v-if="posts && posts.value && posts.value.length"
+    :posts="posts.value.map(p => ({
       title: p.title,
       description: p.description,
       date: p.date,
