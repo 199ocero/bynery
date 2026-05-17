@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useEmblaCarousel from "embla-carousel-vue";
-import Autoplay from "embla-carousel-autoplay";
 import basePhone from "~/assets/images/easyreceipt/base_phone.png";
 import basePhone1 from "~/assets/images/easyreceipt/base_phone-1.png";
 import basePhone2 from "~/assets/images/easyreceipt/base_phone-2.png";
@@ -17,7 +15,7 @@ import steppetPhone5 from "~/assets/images/steppet/base_phone_5.png";
 import steppetLogo from "~/assets/images/steppet.svg";
 
 useAppSeo({
-  title: "Bynery – Independent Software Studio | Focused Mobile & Web Apps",
+  title: "Independent Software Studio | Focused Mobile & Web Apps",
   description:
     "Bynery is an independent studio building focused mobile and web apps. Home to EasyReceipt and Steppet. No bloat, just great software.",
 });
@@ -86,7 +84,7 @@ useHead({
   ],
 })
 
-// EasyReceipt carousel
+// Custom Carousel Logic
 const easyreceiptImages = [
   basePhone,
   basePhone1,
@@ -96,35 +94,6 @@ const easyreceiptImages = [
   basePhone5,
 ];
 
-const [emblaRef, emblaApi] = useEmblaCarousel(
-  {
-    loop: true,
-    align: "center",
-    containScroll: "trimSnaps",
-  },
-  [Autoplay({ delay: 6500, stopOnInteraction: true })],
-);
-
-const currentEasyreceiptSlide = ref(0);
-
-const syncEasyreceiptSlide = () => {
-  if (!emblaApi.value) return;
-  currentEasyreceiptSlide.value = emblaApi.value.selectedScrollSnap();
-};
-
-const nextEasyreceiptSlide = () => {
-  emblaApi.value?.scrollNext();
-};
-
-const previousEasyreceiptSlide = () => {
-  emblaApi.value?.scrollPrev();
-};
-
-const goToEasyreceiptSlide = (index: number) => {
-  emblaApi.value?.scrollTo(index);
-};
-
-// Steppet carousel
 const steppetImages = [
   steppetPhone,
   steppetPhone1,
@@ -134,58 +103,78 @@ const steppetImages = [
   steppetPhone5,
 ];
 
-const [steppetEmblaRef, steppetEmblaApi] = useEmblaCarousel(
-  {
-    loop: true,
-    align: "center",
-    containScroll: "trimSnaps",
-  },
-  [Autoplay({ delay: 6500, stopOnInteraction: true })],
-);
+// EasyReceipt Carousel
+const currentEasyreceiptSlide = ref(0);
+let easyreceiptAutoplayInterval: number | null = null;
 
-const currentSteppetSlide = ref(0);
-
-const syncSteppetSlide = () => {
-  if (!steppetEmblaApi.value) return;
-  currentSteppetSlide.value = steppetEmblaApi.value.selectedScrollSnap();
+const nextEasyreceiptSlide = () => {
+  currentEasyreceiptSlide.value = (currentEasyreceiptSlide.value + 1) % easyreceiptImages.length;
 };
 
+const previousEasyreceiptSlide = () => {
+  currentEasyreceiptSlide.value = currentEasyreceiptSlide.value === 0
+    ? easyreceiptImages.length - 1
+    : currentEasyreceiptSlide.value - 1;
+};
+
+const goToEasyreceiptSlide = (index: number) => {
+  currentEasyreceiptSlide.value = index;
+};
+
+const startEasyreceiptAutoplay = () => {
+  stopEasyreceiptAutoplay();
+  easyreceiptAutoplayInterval = window.setInterval(() => {
+    nextEasyreceiptSlide();
+  }, 6500);
+};
+
+const stopEasyreceiptAutoplay = () => {
+  if (easyreceiptAutoplayInterval !== null) {
+    clearInterval(easyreceiptAutoplayInterval);
+    easyreceiptAutoplayInterval = null;
+  }
+};
+
+// Steppet Carousel
+const currentSteppetSlide = ref(0);
+let steppetAutoplayInterval: number | null = null;
+
 const nextSteppetSlide = () => {
-  steppetEmblaApi.value?.scrollNext();
+  currentSteppetSlide.value = (currentSteppetSlide.value + 1) % steppetImages.length;
 };
 
 const previousSteppetSlide = () => {
-  steppetEmblaApi.value?.scrollPrev();
+  currentSteppetSlide.value = currentSteppetSlide.value === 0
+    ? steppetImages.length - 1
+    : currentSteppetSlide.value - 1;
 };
 
 const goToSteppetSlide = (index: number) => {
-  steppetEmblaApi.value?.scrollTo(index);
+  currentSteppetSlide.value = index;
+};
+
+const startSteppetAutoplay = () => {
+  stopSteppetAutoplay();
+  steppetAutoplayInterval = window.setInterval(() => {
+    nextSteppetSlide();
+  }, 6500);
+};
+
+const stopSteppetAutoplay = () => {
+  if (steppetAutoplayInterval !== null) {
+    clearInterval(steppetAutoplayInterval);
+    steppetAutoplayInterval = null;
+  }
 };
 
 onMounted(() => {
-  if (emblaApi.value) {
-    syncEasyreceiptSlide();
-    emblaApi.value.on("select", syncEasyreceiptSlide);
-    emblaApi.value.on("reInit", syncEasyreceiptSlide);
-  }
-
-  if (steppetEmblaApi.value) {
-    syncSteppetSlide();
-    steppetEmblaApi.value.on("select", syncSteppetSlide);
-    steppetEmblaApi.value.on("reInit", syncSteppetSlide);
-  }
+  startEasyreceiptAutoplay();
+  startSteppetAutoplay();
 });
 
 onUnmounted(() => {
-  if (emblaApi.value) {
-    emblaApi.value.off("select", syncEasyreceiptSlide);
-    emblaApi.value.off("reInit", syncEasyreceiptSlide);
-  }
-
-  if (steppetEmblaApi.value) {
-    steppetEmblaApi.value.off("select", syncSteppetSlide);
-    steppetEmblaApi.value.off("reInit", syncSteppetSlide);
-  }
+  stopEasyreceiptAutoplay();
+  stopSteppetAutoplay();
 });
 </script>
 
@@ -332,29 +321,30 @@ onUnmounted(() => {
             <div
               class="absolute -inset-4 bg-gradient-to-br from-[#5e6ad2]/20 to-transparent blur-2xl opacity-50"
             ></div>
-            <div class="relative mx-auto w-[280px] sm:w-[320px] md:w-[360px]">
-              <div
-                ref="emblaRef"
-                class="overflow-hidden"
-              >
-                <div class="flex">
-                  <div
-                    v-for="(image, index) in easyreceiptImages"
-                    :key="image"
-                    class="min-w-0 flex-[0_0_100%] p-2"
-                  >
-                    <img
-                      :src="image"
-                      :alt="`EasyReceipt screenshot ${index + 1}`"
-                      class="block h-auto w-full rounded-[18px] object-contain"
-                    />
-                  </div>
-                </div>
+            <div class="relative w-full max-w-[340px] mx-auto">
+              <div class="relative rounded-[18px] overflow-hidden">
+                <!-- Invisible placeholder to maintain height -->
+                <img
+                  :src="easyreceiptImages[0]"
+                  class="block h-auto w-full opacity-0 pointer-events-none"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <img
+                  v-for="(img, index) in easyreceiptImages"
+                  :key="index"
+                  :src="img"
+                  :alt="`EasyReceipt screenshot ${index + 1}`"
+                  class="absolute inset-0 block h-full w-full rounded-[18px] object-contain transition-opacity duration-500 ease-in-out"
+                  :class="currentEasyreceiptSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'"
+                />
               </div>
 
               <div class="mt-3 flex items-center justify-between">
                 <button
                   @click="previousEasyreceiptSlide"
+                  @mouseenter="stopEasyreceiptAutoplay"
+                  @mouseleave="startEasyreceiptAutoplay"
                   class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
                   aria-label="Previous slide"
                 >
@@ -368,6 +358,8 @@ onUnmounted(() => {
                     v-for="(_, index) in easyreceiptImages"
                     :key="`dot-${index}`"
                     @click="goToEasyreceiptSlide(index)"
+                    @mouseenter="stopEasyreceiptAutoplay"
+                    @mouseleave="startEasyreceiptAutoplay"
                     class="h-2 w-2 rounded-full transition-colors"
                     :class="
                       currentEasyreceiptSlide === index
@@ -380,6 +372,8 @@ onUnmounted(() => {
 
                 <button
                   @click="nextEasyreceiptSlide"
+                  @mouseenter="stopEasyreceiptAutoplay"
+                  @mouseleave="startEasyreceiptAutoplay"
                   class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
                   aria-label="Next slide"
                 >
@@ -400,26 +394,30 @@ onUnmounted(() => {
             <div
               class="absolute -inset-4 bg-gradient-to-br from-[#00b341]/20 to-transparent blur-2xl opacity-50"
             ></div>
-            <div class="relative mx-auto w-[280px] sm:w-[320px] md:w-[360px]">
-              <div ref="steppetEmblaRef" class="overflow-hidden">
-                <div class="flex">
-                  <div
-                    v-for="(image, index) in steppetImages"
-                    :key="image"
-                    class="min-w-0 flex-[0_0_100%] p-2"
-                  >
-                    <img
-                      :src="image"
-                      :alt="`Steppet screenshot ${index + 1}`"
-                      class="block h-auto w-full rounded-[18px] object-contain"
-                    />
-                  </div>
-                </div>
+            <div class="relative w-full max-w-[340px] mx-auto">
+              <div class="relative rounded-[18px] overflow-hidden">
+                <!-- Invisible placeholder to maintain height -->
+                <img
+                  :src="steppetImages[0]"
+                  class="block h-auto w-full opacity-0 pointer-events-none"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <img
+                  v-for="(img, index) in steppetImages"
+                  :key="index"
+                  :src="img"
+                  :alt="`Steppet screenshot ${index + 1}`"
+                  class="absolute inset-0 block h-full w-full rounded-[18px] object-contain transition-opacity duration-500 ease-in-out"
+                  :class="currentSteppetSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'"
+                />
               </div>
 
               <div class="mt-3 flex items-center justify-between">
                 <button
                   @click="previousSteppetSlide"
+                  @mouseenter="stopSteppetAutoplay"
+                  @mouseleave="startSteppetAutoplay"
                   class="rounded-full bg-[#00b341]/30 p-2 text-white transition-colors hover:bg-[#00b341]/50"
                   aria-label="Previous Steppet slide"
                 >
@@ -433,6 +431,8 @@ onUnmounted(() => {
                     v-for="(_, index) in steppetImages"
                     :key="`steppet-dot-${index}`"
                     @click="goToSteppetSlide(index)"
+                    @mouseenter="stopSteppetAutoplay"
+                    @mouseleave="startSteppetAutoplay"
                     class="h-2 w-2 rounded-full transition-colors"
                     :class="
                       currentSteppetSlide === index
@@ -445,6 +445,8 @@ onUnmounted(() => {
 
                 <button
                   @click="nextSteppetSlide"
+                  @mouseenter="stopSteppetAutoplay"
+                  @mouseleave="startSteppetAutoplay"
                   class="rounded-full bg-[#00b341]/30 p-2 text-white transition-colors hover:bg-[#00b341]/50"
                   aria-label="Next Steppet slide"
                 >

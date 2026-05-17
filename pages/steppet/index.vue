@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useEmblaCarousel from 'embla-carousel-vue'
-import Autoplay from 'embla-carousel-autoplay'
 import steppetBasePhone from '~/assets/images/steppet/base_phone.png'
 import steppetBasePhone1 from '~/assets/images/steppet/base_phone_1.png'
 import steppetBasePhone2 from '~/assets/images/steppet/base_phone_2.png'
@@ -17,49 +15,44 @@ const steppetScreenshots = [
   { src: steppetBasePhone5 },
 ]
 
-const [steppetCarouselRef, steppetCarouselApi] = useEmblaCarousel(
-  {
-    loop: true,
-    align: 'start',
-    containScroll: 'trimSnaps',
-    slidesToScroll: 1,
-    dragFree: false,
-    inViewThreshold: 0.1,
-    breakpoints: {},
-  },
-  [Autoplay({ delay: 7000, stopOnInteraction: true })],
-)
-
+// Custom Carousel Logic
 const currentSteppetSlide = ref(0)
-
-const syncSteppetSlide = () => {
-  if (!steppetCarouselApi.value) return
-  currentSteppetSlide.value = steppetCarouselApi.value.selectedScrollSnap()
-}
+let autoplayInterval: number | null = null
 
 const nextSteppetSlide = () => {
-  steppetCarouselApi.value?.scrollNext()
+  currentSteppetSlide.value = (currentSteppetSlide.value + 1) % steppetScreenshots.length
 }
 
 const previousSteppetSlide = () => {
-  steppetCarouselApi.value?.scrollPrev()
+  currentSteppetSlide.value = currentSteppetSlide.value === 0
+    ? steppetScreenshots.length - 1
+    : currentSteppetSlide.value - 1
 }
 
 const goToSteppetSlide = (index: number) => {
-  steppetCarouselApi.value?.scrollTo(index)
+  currentSteppetSlide.value = index
+}
+
+const startAutoplay = () => {
+  stopAutoplay()
+  autoplayInterval = window.setInterval(() => {
+    nextSteppetSlide()
+  }, 7000)
+}
+
+const stopAutoplay = () => {
+  if (autoplayInterval !== null) {
+    clearInterval(autoplayInterval)
+    autoplayInterval = null
+  }
 }
 
 onMounted(() => {
-  if (!steppetCarouselApi.value) return
-  syncSteppetSlide()
-  steppetCarouselApi.value.on('select', syncSteppetSlide)
-  steppetCarouselApi.value.on('reInit', syncSteppetSlide)
+  startAutoplay()
 })
 
 onUnmounted(() => {
-  if (!steppetCarouselApi.value) return
-  steppetCarouselApi.value.off('select', syncSteppetSlide)
-  steppetCarouselApi.value.off('reInit', syncSteppetSlide)
+  stopAutoplay()
 })
 useAppSeo({
   title: 'Steppet - Turn Every Step Into an Adventure',
@@ -232,12 +225,15 @@ useHead({
         </div>
 
         <div class="mx-auto w-full max-w-4xl">
-          <div ref="steppetCarouselRef" class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
-            <div class="flex">
+          <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
+            <div
+              class="flex transition-transform duration-500 ease-in-out"
+              :style="{ width: '100%', transform: `translateX(-${currentSteppetSlide * 100}%)` }"
+            >
               <div
                 v-for="(shot, index) in steppetScreenshots"
                 :key="index"
-                class="min-w-0 flex-[0_0_25%] p-2"
+                class="flex-shrink-0 w-full"
               >
                 <img
                   :src="shot.src"
@@ -252,6 +248,8 @@ useHead({
           <div class="mt-3 flex items-center justify-between">
             <button
               @click="previousSteppetSlide"
+              @mouseenter="stopAutoplay"
+              @mouseleave="startAutoplay"
               class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
               aria-label="Previous screenshot"
             >
@@ -265,6 +263,8 @@ useHead({
                 v-for="(_, index) in steppetScreenshots"
                 :key="`steppet-screen-${index}`"
                 @click="goToSteppetSlide(index)"
+                @mouseenter="stopAutoplay"
+                @mouseleave="startAutoplay"
                 class="h-2 w-2 rounded-full transition-colors"
                 :class="
                   currentSteppetSlide === index
@@ -277,6 +277,8 @@ useHead({
 
             <button
               @click="nextSteppetSlide"
+              @mouseenter="stopAutoplay"
+              @mouseleave="startAutoplay"
               class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
               aria-label="Next screenshot"
             >

@@ -19,6 +19,11 @@ export function useAppSeo({ title, description, image, url, canonical }: SeoOpti
     ogUrl: url ? `https://bynery.app${url}` : undefined,
     ogSiteName: 'Bynery',
     twitterCard: 'summary_large_image',
-    canonical: canonicalUrl,
+  })
+
+  useHead({
+    link: [
+      { rel: 'canonical', href: canonicalUrl }
+    ]
   })
 }

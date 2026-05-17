@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useEmblaCarousel from 'embla-carousel-vue'
-import Autoplay from 'embla-carousel-autoplay'
 import easyreceiptBasePhone from '~/assets/images/easyreceipt/base_phone.png'
 import easyreceiptBasePhone1 from '~/assets/images/easyreceipt/base_phone-1.png'
 import easyreceiptBasePhone2 from '~/assets/images/easyreceipt/base_phone-2.png'
@@ -34,49 +32,44 @@ const screenshots = [
   { src: easyreceiptBasePhone5 },
 ]
 
-const [screenshotCarouselRef, screenshotCarouselApi] = useEmblaCarousel(
-  {
-    loop: true,
-    align: 'start',
-    containScroll: 'trimSnaps',
-    slidesToScroll: 1,
-    dragFree: false,
-    inViewThreshold: 0.1,
-    breakpoints: {},
-  },
-  [Autoplay({ delay: 7000, stopOnInteraction: true })],
-)
-
+// Custom Carousel Logic
 const currentScreenshotSlide = ref(0)
-
-const syncScreenshotSlide = () => {
-  if (!screenshotCarouselApi.value) return
-  currentScreenshotSlide.value = screenshotCarouselApi.value.selectedScrollSnap()
-}
+let autoplayInterval: number | null = null
 
 const nextScreenshotSlide = () => {
-  screenshotCarouselApi.value?.scrollNext()
+  currentScreenshotSlide.value = (currentScreenshotSlide.value + 1) % screenshots.length
 }
 
 const previousScreenshotSlide = () => {
-  screenshotCarouselApi.value?.scrollPrev()
+  currentScreenshotSlide.value = currentScreenshotSlide.value === 0
+    ? screenshots.length - 1
+    : currentScreenshotSlide.value - 1
 }
 
 const goToScreenshotSlide = (index: number) => {
-  screenshotCarouselApi.value?.scrollTo(index)
+  currentScreenshotSlide.value = index
+}
+
+const startAutoplay = () => {
+  stopAutoplay()
+  autoplayInterval = window.setInterval(() => {
+    nextScreenshotSlide()
+  }, 7000)
+}
+
+const stopAutoplay = () => {
+  if (autoplayInterval !== null) {
+    clearInterval(autoplayInterval)
+    autoplayInterval = null
+  }
 }
 
 onMounted(() => {
-  if (!screenshotCarouselApi.value) return
-  syncScreenshotSlide()
-  screenshotCarouselApi.value.on('select', syncScreenshotSlide)
-  screenshotCarouselApi.value.on('reInit', syncScreenshotSlide)
+  startAutoplay()
 })
 
 onUnmounted(() => {
-  if (!screenshotCarouselApi.value) return
-  screenshotCarouselApi.value.off('select', syncScreenshotSlide)
-  screenshotCarouselApi.value.off('reInit', syncScreenshotSlide)
+  stopAutoplay()
 })
 
 const pricing = [
@@ -316,12 +309,15 @@ useHead({
         </div>
 
         <div class="mx-auto w-full max-w-4xl">
-          <div ref="screenshotCarouselRef" class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
-            <div class="flex">
+          <div class="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0f0f0f]">
+            <div
+              class="flex transition-transform duration-500 ease-in-out"
+              :style="{ width: '100%', transform: `translateX(-${currentScreenshotSlide * 100}%)` }"
+            >
               <div
                 v-for="(shot, index) in screenshots"
                 :key="index"
-                class="min-w-0 flex-[0_0_25%] p-2"
+                class="flex-shrink-0 w-full"
               >
                 <img
                   :src="shot.src"
@@ -336,6 +332,8 @@ useHead({
           <div class="mt-3 flex items-center justify-between">
             <button
               @click="previousScreenshotSlide"
+              @mouseenter="stopAutoplay"
+              @mouseleave="startAutoplay"
               class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
               aria-label="Previous screenshot"
             >
@@ -349,6 +347,8 @@ useHead({
                 v-for="(_, index) in screenshots"
                 :key="`easyreceipt-screen-${index}`"
                 @click="goToScreenshotSlide(index)"
+                @mouseenter="stopAutoplay"
+                @mouseleave="startAutoplay"
                 class="h-2 w-2 rounded-full transition-colors"
                 :class="
                   currentScreenshotSlide === index
@@ -361,6 +361,8 @@ useHead({
 
             <button
               @click="nextScreenshotSlide"
+              @mouseenter="stopAutoplay"
+              @mouseleave="startAutoplay"
               class="rounded-full bg-[#5e6ad2]/30 p-2 text-white transition-colors hover:bg-[#5e6ad2]/50"
               aria-label="Next screenshot"
             >
